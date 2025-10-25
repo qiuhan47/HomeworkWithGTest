@@ -122,4 +122,46 @@ namespace adas
         const Pose target({0, 0, 'E'});
         ASSERT_EQ(target, executor->Query());
     }
+
+    // R
+    //  R指令测试用例
+    TEST(ExecutorTest, should_return_heading_S_given_command_is_R_and_facing_is_E)
+    {
+        std::unique_ptr<Executor> executor(Executor::NewExcutor({0, 0, 'E'}));
+
+        executor->Execute("R");
+
+        const Pose target({0, 0, 'S'});
+        ASSERT_EQ(target, executor->Query());
+    }
+
+    TEST(ExecutorTest, should_return_heading_N_given_command_is_R_and_facing_is_W)
+    {
+        std::unique_ptr<Executor> executor(Executor::NewExcutor({0, 0, 'W'}));
+
+        executor->Execute("R");
+
+        const Pose target({0, 0, 'N'});
+        ASSERT_EQ(target, executor->Query());
+    }
+
+    TEST(ExecutorTest, should_return_heading_E_given_command_is_R_and_facing_is_N)
+    {
+        std::unique_ptr<Executor> executor(Executor::NewExcutor({0, 0, 'N'}));
+
+        executor->Execute("R");
+
+        const Pose target({0, 0, 'E'});
+        ASSERT_EQ(target, executor->Query());
+    }
+
+    TEST(ExecutorTest, should_return_heading_W_given_command_is_R_and_facing_is_S)
+    {
+        std::unique_ptr<Executor> executor(Executor::NewExcutor({0, 0, 'S'}));
+
+        executor->Execute("R");
+
+        const Pose target({0, 0, 'W'});
+        ASSERT_EQ(target, executor->Query());
+    }
 }
