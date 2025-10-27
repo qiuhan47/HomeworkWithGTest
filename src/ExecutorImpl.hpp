@@ -48,6 +48,14 @@ namespace adas
                 executor.TurnLeft();
             }
         };
+        class TurnRightCommand final
+        {
+        public:
+            void DoOperate(ExecutorImpl &executor) const noexcept
+            {
+                executor.TurnRight();
+            }
+        };
 
     private:
         void Move(void) noexcept;
