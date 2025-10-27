@@ -31,16 +31,22 @@ namespace adas
         bool isFast;
 
     private:
-        class MoveCommand final // 定义一个嵌套类MoveCommand，完成Move动作（M指令）
+        class ICommand
         {
         public:
-            // 执行Move动作，需要委托ExecutorImpl&执行器来完成动作
+            virtual ~ICommand() = default;
+            virtual void DoOperate(ExecutorImpl &executor) const noexcept = 0;
+        };
+
+        class MoveCommand final : public ICommand
+        {
+        public:
             void DoOperate(ExecutorImpl &executor) const noexcept
             {
                 executor.Move();
             }
         };
-        class TurnLeftCommand final
+        class TurnLeftCommand final : public ICommand
         {
         public:
             void DoOperate(ExecutorImpl &executor) const noexcept
@@ -48,7 +54,7 @@ namespace adas
                 executor.TurnLeft();
             }
         };
-        class TurnRightCommand final
+        class TurnRightCommand final : public ICommand
         {
         public:
             void DoOperate(ExecutorImpl &executor) const noexcept
