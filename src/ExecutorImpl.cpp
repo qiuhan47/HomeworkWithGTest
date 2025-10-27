@@ -16,28 +16,33 @@ namespace adas
         return new (std::nothrow) ExecutorImpl(pose);
     }
 
-    void ExecutorImpl::Execute(const std::string &command) noexcept
+    void ExecutorImpl::Execute(const std::string &commands) noexcept
     {
-        for (const auto cmd : command)
+        for (const auto cmd : commands)
         {
+            // 声明一个ICommand类型的智能指针
+            std::unique_ptr<ICommand> cmder;
+
             if (cmd == 'M')
             {
-                std::unique_ptr<MoveCommand> cmder = std::make_unique<MoveCommand>();
-                cmder->DoOperate(*this);
+                cmder = std::make_unique<MoveCommand>();
             }
             else if (cmd == 'L')
             {
-                std::unique_ptr<TurnLeftCommand> cmder = std::make_unique<TurnLeftCommand>();
-                cmder->DoOperate(*this);
+                cmder = std::make_unique<TurnLeftCommand>();
             }
             else if (cmd == 'R')
             {
-                std::unique_ptr<TurnRightCommand> cmder = std::make_unique<TurnRightCommand>();
-                cmder->DoOperate(*this);
+                cmder = std::make_unique<TurnRightCommand>();
             }
             else if (cmd == 'F')
             {
                 isFast = !isFast;
+            }
+
+            if (cmder)
+            {
+                cmder->DoOperate(*this);
             }
         }
     }
