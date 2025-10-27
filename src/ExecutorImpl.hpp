@@ -5,7 +5,7 @@
 namespace adas
 {
     // Executor的具体实现
-    class ExecutorImpl : public Executor
+    class ExecutorImpl final : public Executor
     {
     public:
         // 构造函数
@@ -29,6 +29,17 @@ namespace adas
         Pose pose;
         // 是否处于加速状态
         bool isFast;
+
+    private:
+        class MoveCommand final // 定义一个嵌套类MoveCommand，完成Move动作（M指令）
+        {
+        public:
+            // 执行Move动作，需要委托ExecutorImpl&执行器来完成动作
+            void DoOperate(ExecutorImpl &executor) const noexcept
+            {
+                executor.Move();
+            }
+        };
 
     private:
         void Move(void) noexcept;
