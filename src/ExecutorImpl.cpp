@@ -2,6 +2,7 @@
 #include "Command.hpp"
 #include <new>
 #include <memory>
+#include <unordered_map>
 
 namespace adas
 {
@@ -19,31 +20,19 @@ namespace adas
 
     void ExecutorImpl::Execute(const std::string &commands) noexcept
     {
+        std::unordered_map<char, std::unique_ptr<ICommand>> cmderMap;
+        cmderMap.emplace('M', std::make_unique<MoveCommand>());
+        cmderMap.emplace('L', std::make_unique<TurnLeftCommand>());
+        cmderMap.emplace('R', std::make_unique<TurnRightCommand>());
+        cmderMap.emplace('F', std::make_unique<FastCommand>());
+
         for (const auto cmd : commands)
         {
-            // 声明一个ICommand类型的智能指针
-            std::unique_ptr<ICommand> cmder = nullptr;
+            const auto it = cmderMap.find(cmd);
 
-            if (cmd == 'M')
+            if (it != cmderMap.end())
             {
-                cmder = std::make_unique<MoveCommand>();
-            }
-            else if (cmd == 'L')
-            {
-                cmder = std::make_unique<TurnLeftCommand>();
-            }
-            else if (cmd == 'R')
-            {
-                cmder = std::make_unique<TurnRightCommand>();
-            }
-            else if (cmd == 'F')
-            {
-                cmder = std::make_unique<FastCommand>();
-            }
-
-            if (cmder)
-            {
-                cmder->DoOperate(poseHandler);
+                it->second->DoOperate(poseHandler);
             }
         }
     }
