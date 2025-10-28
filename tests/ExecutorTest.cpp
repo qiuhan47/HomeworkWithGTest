@@ -1,22 +1,24 @@
 #include <gtest/gtest.h>
 #include <memory>
-#include <tuple>
+// #include <tuple>
 #include "Executor.hpp"
+#include "PoseEq.hpp"
 
 namespace adas
 {
     // 重载Pose的==，用的全局函数，用于比较两个姿态对象是不是相对
-    bool operator==(const Pose &lhs, const Pose &rhs)
-    {
-        return std::tie(lhs.x, lhs.y, lhs.heading) == std::tie(rhs.x, rhs.y, rhs.heading);
-    }
-    // 下面两个测试用例，测试静态方法Executor::NewExcutor
+    // bool operator==(const Pose &lhs, const Pose &rhs)
+    // {
+    //     return std::tie(lhs.x, lhs.y, lhs.heading) == std::tie(rhs.x, rhs.y, rhs.heading);
+    // }
+
+    // 下面两个测试用例，测试静态方法Executor::NewExecutor
     // 测试用例1
     TEST(ExecutorTest, should_return_init_pose_when_without_command)
     {
         // given 给定测试条件
-        // 测试条件就是调用Executor的静态方法Executor::NewExcutor
-        std::unique_ptr<Executor> executor(Executor::NewExcutor({0, 0, 'E'})); // 初始姿势
+        // 测试条件就是调用Executor的静态方法Executor::NewExecutor
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'E'})); // 初始姿势
 
         // when
 
@@ -29,7 +31,7 @@ namespace adas
     TEST(ExecutorTest, should_return_default_pose_when_init_and_command)
     {
         // given
-        std::unique_ptr<Executor> executor(Executor::NewExcutor());
+        std::unique_ptr<Executor> executor(Executor::NewExecutor());
 
         // when
 
@@ -42,7 +44,7 @@ namespace adas
     TEST(ExecutorTest, should_return_x_plus_1_given_commmad_is_M_and_facing_is_E)
     {
         // given 给定一个Executor
-        std::unique_ptr<Executor> executor(Executor::NewExcutor({0, 0, 'E'}));
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'E'}));
 
         // when 调用executor的Execute方法去执行M指令
         executor->Execute("M");
@@ -53,7 +55,7 @@ namespace adas
     }
     TEST(ExecutorTest, should_return_x_minus_1_given_command_is_M_and_facing_is_W)
     {
-        std::unique_ptr<Executor> executor(Executor::NewExcutor({0, 0, 'W'}));
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'W'}));
 
         executor->Execute("M");
 
@@ -63,7 +65,7 @@ namespace adas
 
     TEST(ExecutorTest, should_return_y_plus_1_given_command_is_M_and_facing_is_N)
     {
-        std::unique_ptr<Executor> executor(Executor::NewExcutor({0, 0, 'N'}));
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'N'}));
 
         executor->Execute("M");
 
@@ -73,7 +75,7 @@ namespace adas
 
     TEST(ExecutorTest, should_return_y_minus_1_given_command_is_M_and_facing_is_S)
     {
-        std::unique_ptr<Executor> executor(Executor::NewExcutor({0, 0, 'S'}));
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'S'}));
 
         executor->Execute("M");
 
@@ -85,7 +87,7 @@ namespace adas
     //  L指令测试用例
     TEST(ExecutorTest, should_return_heading_N_given_command_is_L_and_facing_is_E)
     {
-        std::unique_ptr<Executor> executor(Executor::NewExcutor({0, 0, 'E'}));
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'E'}));
 
         executor->Execute("L");
 
@@ -95,7 +97,7 @@ namespace adas
 
     TEST(ExecutorTest, should_return_heading_S_given_command_is_L_and_facing_is_W)
     {
-        std::unique_ptr<Executor> executor(Executor::NewExcutor({0, 0, 'W'}));
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'W'}));
 
         executor->Execute("L");
 
@@ -105,7 +107,7 @@ namespace adas
 
     TEST(ExecutorTest, should_return_heading_W_given_command_is_L_and_facing_is_N)
     {
-        std::unique_ptr<Executor> executor(Executor::NewExcutor({0, 0, 'N'}));
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'N'}));
 
         executor->Execute("L");
 
@@ -115,7 +117,7 @@ namespace adas
 
     TEST(ExecutorTest, should_return_heading_E_given_command_is_L_and_facing_is_S)
     {
-        std::unique_ptr<Executor> executor(Executor::NewExcutor({0, 0, 'S'}));
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'S'}));
 
         executor->Execute("L");
 
@@ -127,7 +129,7 @@ namespace adas
     //  R指令测试用例
     TEST(ExecutorTest, should_return_heading_S_given_command_is_R_and_facing_is_E)
     {
-        std::unique_ptr<Executor> executor(Executor::NewExcutor({0, 0, 'E'}));
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'E'}));
 
         executor->Execute("R");
 
@@ -137,7 +139,7 @@ namespace adas
 
     TEST(ExecutorTest, should_return_heading_N_given_command_is_R_and_facing_is_W)
     {
-        std::unique_ptr<Executor> executor(Executor::NewExcutor({0, 0, 'W'}));
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'W'}));
 
         executor->Execute("R");
 
@@ -147,7 +149,7 @@ namespace adas
 
     TEST(ExecutorTest, should_return_heading_E_given_command_is_R_and_facing_is_N)
     {
-        std::unique_ptr<Executor> executor(Executor::NewExcutor({0, 0, 'N'}));
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'N'}));
 
         executor->Execute("R");
 
@@ -157,11 +159,22 @@ namespace adas
 
     TEST(ExecutorTest, should_return_heading_W_given_command_is_R_and_facing_is_S)
     {
-        std::unique_ptr<Executor> executor(Executor::NewExcutor({0, 0, 'S'}));
+        std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'S'}));
 
         executor->Execute("R");
 
         const Pose target({0, 0, 'W'});
         ASSERT_EQ(target, executor->Query());
     }
+
+    // F
+    // TEST(ExecutorTest, should_return_x_plus_2_given_status_is_fast_command_is_M_and_facing_is_E)
+    // {
+    //     std::unique_ptr<Executor> executor(Executor::NewExecutor({0, 0, 'E'}));
+
+    //     executor->Execute("FM");
+
+    //     const Pose target({2, 0, 'E'});
+    //     ASSERT_EQ(target, executor->Query());
+    // }
 }

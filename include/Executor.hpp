@@ -13,7 +13,7 @@ namespace adas
     class Executor
     {
     public:
-        static Executor *NewExcutor(const Pose &pose = {0, 0, 'N'}) noexcept;
+        static Executor *NewExecutor(const Pose &pose = {0, 0, 'N'}) noexcept;
 
     public:
         // 默认构造函数
