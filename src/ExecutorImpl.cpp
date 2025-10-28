@@ -4,7 +4,7 @@
 
 namespace adas
 {
-    ExecutorImpl::ExecutorImpl(const Pose &pose) noexcept : pose(pose), isFast(false) {}
+    ExecutorImpl::ExecutorImpl(const Pose &pose) noexcept : pose(pose), fast(false) {}
 
     Pose ExecutorImpl::Query(void) const noexcept
     {
@@ -37,7 +37,7 @@ namespace adas
             }
             else if (cmd == 'F')
             {
-                isFast = !isFast;
+                cmder = std::make_unique<FastCommand>();
             }
 
             if (cmder)
@@ -49,79 +49,89 @@ namespace adas
 
     void ExecutorImpl::Move() noexcept
     {
-        if (!isFast)
+        // if (!IsFast())
+        // {
+        if (pose.heading == 'E')
         {
-            if (pose.heading == 'E')
-            {
-                ++pose.x;
-            }
-            else if (pose.heading == 'W')
-            {
-                --pose.x;
-            }
-            else if (pose.heading == 'N')
-            {
-                ++pose.y;
-            }
-            else if (pose.heading == 'S')
-            {
-                --pose.y;
-            }
+            ++pose.x;
         }
-        else
+        else if (pose.heading == 'W')
         {
+            --pose.x;
         }
+        else if (pose.heading == 'N')
+        {
+            ++pose.y;
+        }
+        else if (pose.heading == 'S')
+        {
+            --pose.y;
+        }
+        // }
+        // else
+        // {
+        // }
     }
 
     void ExecutorImpl::TurnLeft() noexcept
     {
-        if (!isFast)
+        // if (!IsFast())
+        // {
+        if (pose.heading == 'E')
         {
-            if (pose.heading == 'E')
-            {
-                pose.heading = 'N';
-            }
-            else if (pose.heading == 'W')
-            {
-                pose.heading = 'S';
-            }
-            else if (pose.heading == 'N')
-            {
-                pose.heading = 'W';
-            }
-            else if (pose.heading == 'S')
-            {
-                pose.heading = 'E';
-            }
+            pose.heading = 'N';
         }
-        else
+        else if (pose.heading == 'W')
         {
+            pose.heading = 'S';
         }
+        else if (pose.heading == 'N')
+        {
+            pose.heading = 'W';
+        }
+        else if (pose.heading == 'S')
+        {
+            pose.heading = 'E';
+        }
+        // }
+        // else
+        // {
+        // }
     }
 
     void ExecutorImpl::TurnRight() noexcept
     {
-        if (!isFast)
+        // if (!IsFast())
+        // {
+        if (pose.heading == 'E')
         {
-            if (pose.heading == 'E')
-            {
-                pose.heading = 'S';
-            }
-            else if (pose.heading == 'W')
-            {
-                pose.heading = 'N';
-            }
-            else if (pose.heading == 'N')
-            {
-                pose.heading = 'E';
-            }
-            else if (pose.heading == 'S')
-            {
-                pose.heading = 'W';
-            }
+            pose.heading = 'S';
         }
-        else
+        else if (pose.heading == 'W')
         {
+            pose.heading = 'N';
         }
+        else if (pose.heading == 'N')
+        {
+            pose.heading = 'E';
+        }
+        else if (pose.heading == 'S')
+        {
+            pose.heading = 'W';
+        }
+        // }
+        // else
+        // {
+        // }
+    }
+
+    void ExecutorImpl::Fast() noexcept
+    {
+        fast = !fast; // 切换加速状态
+    }
+
+    bool ExecutorImpl::IsFast() const noexcept
+    {
+        return fast; // 返回当前加速状态
     }
 }
