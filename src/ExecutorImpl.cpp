@@ -5,11 +5,11 @@
 
 namespace adas
 {
-    ExecutorImpl::ExecutorImpl(const Pose &pose) noexcept : pose(pose), fast(false) {}
+    ExecutorImpl::ExecutorImpl(const Pose &pose) noexcept : poseHandler(pose) {}
 
     Pose ExecutorImpl::Query(void) const noexcept
     {
-        return pose;
+        return poseHandler.Query();
     }
 
     Executor *Executor::NewExecutor(const Pose &pose) noexcept
@@ -22,7 +22,7 @@ namespace adas
         for (const auto cmd : commands)
         {
             // 声明一个ICommand类型的智能指针
-            std::unique_ptr<ICommand> cmder;
+            std::unique_ptr<ICommand> cmder = nullptr;
 
             if (cmd == 'M')
             {
@@ -43,96 +43,8 @@ namespace adas
 
             if (cmder)
             {
-                cmder->DoOperate(*this);
+                cmder->DoOperate(poseHandler);
             }
         }
-    }
-
-    void ExecutorImpl::Move() noexcept
-    {
-        // if (!IsFast())
-        // {
-        if (pose.heading == 'E')
-        {
-            ++pose.x;
-        }
-        else if (pose.heading == 'W')
-        {
-            --pose.x;
-        }
-        else if (pose.heading == 'N')
-        {
-            ++pose.y;
-        }
-        else if (pose.heading == 'S')
-        {
-            --pose.y;
-        }
-        // }
-        // else
-        // {
-        // }
-    }
-
-    void ExecutorImpl::TurnLeft() noexcept
-    {
-        // if (!IsFast())
-        // {
-        if (pose.heading == 'E')
-        {
-            pose.heading = 'N';
-        }
-        else if (pose.heading == 'W')
-        {
-            pose.heading = 'S';
-        }
-        else if (pose.heading == 'N')
-        {
-            pose.heading = 'W';
-        }
-        else if (pose.heading == 'S')
-        {
-            pose.heading = 'E';
-        }
-        // }
-        // else
-        // {
-        // }
-    }
-
-    void ExecutorImpl::TurnRight() noexcept
-    {
-        // if (!IsFast())
-        // {
-        if (pose.heading == 'E')
-        {
-            pose.heading = 'S';
-        }
-        else if (pose.heading == 'W')
-        {
-            pose.heading = 'N';
-        }
-        else if (pose.heading == 'N')
-        {
-            pose.heading = 'E';
-        }
-        else if (pose.heading == 'S')
-        {
-            pose.heading = 'W';
-        }
-        // }
-        // else
-        // {
-        // }
-    }
-
-    void ExecutorImpl::Fast() noexcept
-    {
-        fast = !fast; // 切换加速状态
-    }
-
-    bool ExecutorImpl::IsFast() const noexcept
-    {
-        return fast; // 返回当前加速状态
     }
 }
