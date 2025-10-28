@@ -2,89 +2,22 @@
 
 namespace adas
 {
-    PoseHandler::PoseHandler(const Pose &pose) noexcept : pose(pose), fast(false) {}
-
-    Pose PoseHandler::Query(void) const noexcept
-    {
-        return pose;
-    }
+    PoseHandler::PoseHandler(const Pose &pose) noexcept
+        : point(pose.x, pose.y), facing(&Direction::GetDirection(pose.heading)) {}
 
     void PoseHandler::Move() noexcept
     {
-        // if (!IsFast())
-        // {
-        if (pose.heading == 'E')
-        {
-            ++pose.x;
-        }
-        else if (pose.heading == 'W')
-        {
-            --pose.x;
-        }
-        else if (pose.heading == 'N')
-        {
-            ++pose.y;
-        }
-        else if (pose.heading == 'S')
-        {
-            --pose.y;
-        }
-        // }
-        // else
-        // {
-        // }
+        point += facing->Move();
     }
 
     void PoseHandler::TurnLeft() noexcept
     {
-        // if (!IsFast())
-        // {
-        if (pose.heading == 'E')
-        {
-            pose.heading = 'N';
-        }
-        else if (pose.heading == 'W')
-        {
-            pose.heading = 'S';
-        }
-        else if (pose.heading == 'N')
-        {
-            pose.heading = 'W';
-        }
-        else if (pose.heading == 'S')
-        {
-            pose.heading = 'E';
-        }
-        // }
-        // else
-        // {
-        // }
+        facing = &(facing->LeftOne());
     }
 
     void PoseHandler::TurnRight() noexcept
     {
-        // if (!IsFast())
-        // {
-        if (pose.heading == 'E')
-        {
-            pose.heading = 'S';
-        }
-        else if (pose.heading == 'W')
-        {
-            pose.heading = 'N';
-        }
-        else if (pose.heading == 'N')
-        {
-            pose.heading = 'E';
-        }
-        else if (pose.heading == 'S')
-        {
-            pose.heading = 'W';
-        }
-        // }
-        // else
-        // {
-        // }
+        facing = &(facing->RightOne());
     }
 
     void PoseHandler::Fast() noexcept
@@ -95,5 +28,10 @@ namespace adas
     bool PoseHandler::IsFast() const noexcept
     {
         return fast; // 返回当前加速状态
+    }
+
+    Pose PoseHandler::Query(void) const noexcept
+    {
+        return {point.GetX(), point.GetY(), facing->GetHeading()};
     }
 }
