@@ -25,6 +25,7 @@ namespace adas
             {'L', TurnLeftCommand()},
             {'R', TurnRightCommand()},
             {'F', FastCommand()},
+            {'B', ReverseCommand()},
         };
         for (const auto cmd : commands)
         {

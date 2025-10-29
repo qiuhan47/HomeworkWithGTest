@@ -12,16 +12,25 @@ namespace adas
         PoseHandler &operator=(const PoseHandler &) = delete;
 
     public:
-        void Move(void) noexcept;
+        // void Move(void) noexcept;
+        void Forward(void) noexcept;  // 原Move
+        void Backward(void) noexcept; // 打算用原Move的逆操作
+
         void TurnLeft(void) noexcept;
         void TurnRight(void) noexcept;
+
         void Fast(void) noexcept;
+        void Reverse(void) noexcept;
+
         bool IsFast(void) const noexcept;
+        bool IsReverse(void) const noexcept;
+
         Pose Query(void) const noexcept;
 
     private:
         Point point;
         const Direction *facing;
         bool fast{false};
+        bool reverse{false};
     };
 }
