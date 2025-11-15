@@ -1,14 +1,8 @@
 #include "ExecutorImpl.hpp"
-// #include "Command.hpp"
+#include <algorithm>
 
 #include "CmderFactory.hpp"
 #include "Singleton.hpp"
-
-#include <algorithm>
-// #include <new>
-// #include <memory>
-// #include <unordered_map>
-
 namespace adas
 {
     ExecutorImpl::ExecutorImpl(const Pose &pose) noexcept : poseHandler(pose) {}
@@ -29,9 +23,9 @@ namespace adas
             Singleton<CmderFactory>::Instance().GetCmders(commands);
         std::for_each(
             cmders.begin(), cmders.end(),
-            [this](const std::function<void(PoseHandler & poseHandler)> &cmder) noexcept
+            [this](const Cmder &cmder) noexcept
             {
-                cmder(poseHandler);
+                cmder(poseHandler).DoOperate(poseHandler);
             });
     }
 }
