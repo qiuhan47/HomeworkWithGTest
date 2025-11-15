@@ -1,8 +1,8 @@
 #include "ExecutorImpl.hpp"
 #include <algorithm>
 
-#include "CmderFactory.hpp"
-#include "Singleton.hpp"
+#include "cmder/CmderFactory.hpp"
+#include "core/Singleton.hpp"
 namespace adas
 {
     ExecutorImpl::ExecutorImpl(const Pose &pose) noexcept : poseHandler(pose) {}
