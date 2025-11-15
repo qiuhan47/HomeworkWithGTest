@@ -9,8 +9,8 @@ namespace adas
         
         for (const auto cmd : commands)
         {
-            const auto it = cmdMap.find(cmd);
-            if (it != cmdMap.end())
+            const auto it = cmderMap.find(cmd);
+            if (it != cmderMap.end())
             {
                 cmders.push_back(it->second);
             }
