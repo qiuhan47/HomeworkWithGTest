@@ -9,11 +9,20 @@ namespace adas
         int y;
         char heading; // NSEW四个方向
     };
+
+    enum class ExecutorType
+    {
+        NORMAL,
+        SPORTS_CAR,
+        BUS,
+    };
+
     /* 执行器接口类 */
     class Executor
     {
     public:
-        static Executor *NewExecutor(const Pose &pose = {0, 0, 'N'}) noexcept;
+        static Executor *NewExecutor(const Pose &pose = {0, 0, 'N'},
+                                     const ExecutorType executorType = ExecutorType::NORMAL) noexcept;
 
     public:
         // 默认构造函数
